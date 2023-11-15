@@ -2,7 +2,6 @@ package com.tutorial.ecommerceapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
 @Entity
 @Table(name = "address")
@@ -29,14 +28,14 @@ public class Address {
     @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private LocalUser localUser;
+    private LocalUser user;
 
     /**
      * Gets the user.
      * @return The user.
      */
     public LocalUser getUser() {
-        return localUser;
+        return user;
     }
 
     /**
@@ -44,7 +43,7 @@ public class Address {
      * @param user User to be set.
      */
     public void setUser(LocalUser user) {
-        this.localUser = user;
+        this.user = user;
     }
 
     /**

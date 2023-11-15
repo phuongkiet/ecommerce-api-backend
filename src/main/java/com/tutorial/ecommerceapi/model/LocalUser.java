@@ -33,7 +33,7 @@ public class LocalUser {
     private String lastName;
     /** The addresses associated with the user. */
     @JsonIgnore
-    @OneToMany(mappedBy = "localUser", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
     /** Verification tokens sent to the user. */
     @JsonIgnore
