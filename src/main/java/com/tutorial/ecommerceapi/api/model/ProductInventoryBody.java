@@ -18,10 +18,8 @@ public class ProductInventoryBody {
     @Size(min = 3, max = 255)
     private String longDescription;
     @NotNull
-    @NotBlank
     private Double price;
     @NotNull
-    @NotBlank
     private Integer quantity;
 
     public String getName() {
