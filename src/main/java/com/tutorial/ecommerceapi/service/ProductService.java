@@ -34,6 +34,7 @@ public class ProductService {
         product.setShortDescription(body.getShortDescription());
         product.setLongDescription(body.getLongDescription());
         product.setPrice(body.getPrice());
+        product.setEnabled(true);
         
         Product savedProduct = productDAO.save(product);
         

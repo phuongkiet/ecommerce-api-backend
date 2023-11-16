@@ -30,4 +30,8 @@ public class ProductController {
         Product savedProduct = productService.addProduct(body);
         return ResponseEntity.ok(savedProduct);
     }
+
+    //TODO: UPDATE PRODUCT
+
+
 }

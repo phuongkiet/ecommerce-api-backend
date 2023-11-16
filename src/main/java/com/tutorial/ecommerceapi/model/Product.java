@@ -17,6 +17,8 @@ public class Product {
     private String longDescription;
     @Column(name = "price", nullable = false)
     private Double price;
+    @Column(name = "isEnabled", nullable = false)
+    private boolean isEnabled;
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
     private Inventory inventory;
 
@@ -58,6 +60,14 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     public Inventory getInventory() {
