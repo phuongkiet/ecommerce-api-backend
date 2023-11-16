@@ -8,10 +8,11 @@ import com.tutorial.ecommerceapi.exception.EmailNotFoundException;
 import com.tutorial.ecommerceapi.exception.UserAlreadyExistException;
 import com.tutorial.ecommerceapi.exception.UserNotVerifiedException;
 import com.tutorial.ecommerceapi.model.LocalUser;
+import com.tutorial.ecommerceapi.model.UserRole;
 import com.tutorial.ecommerceapi.model.VerificationToken;
 import com.tutorial.ecommerceapi.model.dao.LocalUserDAO;
+import com.tutorial.ecommerceapi.model.dao.UserRoleDAO;
 import com.tutorial.ecommerceapi.model.dao.VerificationTokenDAO;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +28,15 @@ public class UserService {
     private EncryptionService encryptionService;
     private JWTService jwtService;
     private EmailService emailService;
+    private UserRoleDAO userRoleDAO;
 
-    public UserService(LocalUserDAO localUserDAO, VerificationTokenDAO verificationTokenDAO, EncryptionService encryptionService, JWTService jwtService, EmailService emailService) {
+    public UserService(LocalUserDAO localUserDAO, VerificationTokenDAO verificationTokenDAO, EncryptionService encryptionService, JWTService jwtService, EmailService emailService, UserRoleDAO userRoleDAO) {
         this.localUserDAO = localUserDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.encryptionService = encryptionService;
         this.jwtService = jwtService;
         this.emailService = emailService;
+        this.userRoleDAO = userRoleDAO;
     }
 
     public LocalUser registerUser(RegistrationBody registrationBody) throws UserAlreadyExistException, EmailFailureException {
@@ -42,12 +45,14 @@ public class UserService {
             || localUserDAO.findByUsernameIgnoreCase(registrationBody.getUsername()).isPresent()){
             throw new UserAlreadyExistException();
         }
+        UserRole role = userRoleDAO.findByRoleId(1L).orElseThrow(() -> new RuntimeException("Role not found"));
         LocalUser user = new LocalUser();
         user.setEmail(registrationBody.getEmail());
         user.setFirstName(registrationBody.getFirstName());
         user.setLastName(registrationBody.getLastName());
         user.setUsername(registrationBody.getUsername());
         user.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
+        user.setUserRole(role);
         VerificationToken verificationToken = createVerificationToken(user);
         emailService.sendVerificationEmail(verificationToken);
         return localUserDAO.save(user);
@@ -121,5 +126,9 @@ public class UserService {
             user.setPassword(encryptionService.encryptPassword(body.getPassword()));
             localUserDAO.save(user);
         }
+    }
+
+    public boolean userHasPermissionToUser(LocalUser user, Long id){
+        return user.getId() == id;
     }
 }

@@ -44,6 +44,10 @@ public class LocalUser {
     @Column(name = "email_verified", nullable = false)
     private Boolean emailVerified = false;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private UserRole userRole;
+
     /**
      * Is the email verified?
      * @return True if it is, false otherwise.
@@ -188,4 +192,15 @@ public class LocalUser {
         this.id = id;
     }
 
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
 }

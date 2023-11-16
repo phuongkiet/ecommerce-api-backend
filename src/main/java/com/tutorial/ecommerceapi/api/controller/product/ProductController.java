@@ -1,10 +1,12 @@
 package com.tutorial.ecommerceapi.api.controller.product;
 
+import com.tutorial.ecommerceapi.api.model.ProductInventoryBody;
+import com.tutorial.ecommerceapi.model.Inventory;
 import com.tutorial.ecommerceapi.model.Product;
 import com.tutorial.ecommerceapi.service.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +23,11 @@ public class ProductController {
     @GetMapping
     public List<Product> getProducts(){
         return productService.getProducts();
+    }
+
+    @PostMapping("/addProduct")
+    public ResponseEntity<Product> addProduct(@Valid @RequestBody ProductInventoryBody body){
+        Product savedProduct = productService.addProduct(body);
+        return ResponseEntity.ok(savedProduct);
     }
 }
