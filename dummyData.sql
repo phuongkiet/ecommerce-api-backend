@@ -3,9 +3,9 @@
 -- You first need to register two users into the system before running this scirpt.
 
 -- Replace the id here with the first user id you want to have ownership of the orders.
-DECLARE @userId1 AS INT = 8;
+DECLARE @userId1 AS INT = 1;
 -- Replace the id here with the second user id you want to have ownership of the orders.
-DECLARE @userId2 AS INT = 9;
+DECLARE @userId2 AS INT = 2;
 
 DELETE FROM web_order_quantities;
 DELETE FROM web_order;
@@ -13,11 +13,11 @@ DELETE FROM inventory;
 DELETE FROM product;
 DELETE FROM address;
 
-INSERT INTO product ([name], short_description, long_description, price) VALUES ('Product #1', 'Product one short description.', 'This is a very long description of product #1.', 5.50);
-INSERT INTO product ([name], short_description, long_description, price) VALUES ('Product #2', 'Product two short description.', 'This is a very long description of product #2.', 10.56);
-INSERT INTO product ([name], short_description, long_description, price) VALUES ('Product #3', 'Product three short description.', 'This is a very long description of product #3.', 2.74);
-INSERT INTO product ([name], short_description, long_description, price) VALUES ('Product #4', 'Product four short description.', 'This is a very long description of product #4.', 15.69);
-INSERT INTO product ([name], short_description, long_description, price) VALUES ('Product #5', 'Product five short description.', 'This is a very long description of product #5.', 42.59);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #1', 1,'Product one short description.', 'This is a very long description of product #1.', 5.50);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #2', 1,'Product two short description.', 'This is a very long description of product #2.', 10.56);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #3', 1,'Product three short description.', 'This is a very long description of product #3.', 2.74);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #4', 1,'Product four short description.', 'This is a very long description of product #4.', 15.69);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #5', 1,'Product five short description.', 'This is a very long description of product #5.', 42.59);
 
 DECLARE @product1 INT, @product2 INT, @product3 INT, @product4 INT, @product5 AS INT;
 
