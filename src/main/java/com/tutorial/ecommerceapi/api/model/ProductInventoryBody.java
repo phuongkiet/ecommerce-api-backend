@@ -23,7 +23,7 @@ public class ProductInventoryBody {
     private Integer quantity;
 
     @NotNull
-    private String category;
+    private Long categoryId;
 
     public String getName() {
         return name;
@@ -45,8 +45,8 @@ public class ProductInventoryBody {
         return quantity;
     }
 
-    public String getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 }
 
