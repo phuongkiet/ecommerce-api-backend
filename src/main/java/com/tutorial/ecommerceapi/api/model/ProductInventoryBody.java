@@ -22,6 +22,9 @@ public class ProductInventoryBody {
     @NotNull
     private Integer quantity;
 
+    @NotNull
+    private String category;
+
     public String getName() {
         return name;
     }
@@ -41,4 +44,9 @@ public class ProductInventoryBody {
     public Integer getQuantity() {
         return quantity;
     }
+
+    public String getCategory() {
+        return category;
+    }
 }
+

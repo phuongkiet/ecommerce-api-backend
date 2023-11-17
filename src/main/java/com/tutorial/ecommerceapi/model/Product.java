@@ -22,6 +22,10 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
     private Inventory inventory;
 
+    @ManyToOne
+    @JoinColumn(name = "category")
+    private Category category;
+
     public Long getId() {
         return id;
     }
@@ -76,5 +80,13 @@ public class Product {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

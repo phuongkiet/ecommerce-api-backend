@@ -2,13 +2,16 @@ package com.tutorial.ecommerceapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "local_user")
-public class LocalUser {
+public class LocalUser implements UserDetails {
 
     /** Unique id for the user. */
     @Id
@@ -44,9 +47,8 @@ public class LocalUser {
     @Column(name = "email_verified", nullable = false)
     private Boolean emailVerified = false;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private UserRole userRole;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     /**
      * Is the email verified?
@@ -144,6 +146,11 @@ public class LocalUser {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
+
     /**
      * Gets the encrypted password.
      * @return The password.
@@ -166,6 +173,26 @@ public class LocalUser {
      */
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     /**
@@ -196,11 +223,11 @@ public class LocalUser {
         return emailVerified;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
