@@ -6,6 +6,7 @@ import com.tutorial.ecommerceapi.model.Product;
 import com.tutorial.ecommerceapi.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ProductController {
     public List<Product> getProducts(){
         return productService.getProducts();
     }
-
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/addProduct")
     public ResponseEntity<Product> addProduct(@Valid @RequestBody ProductInventoryBody body){
         Product savedProduct = productService.addProduct(body);

@@ -12,6 +12,7 @@ import com.tutorial.ecommerceapi.model.Role;
 import com.tutorial.ecommerceapi.model.VerificationToken;
 import com.tutorial.ecommerceapi.model.dao.LocalUserDAO;
 import com.tutorial.ecommerceapi.model.dao.VerificationTokenDAO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class UserService {
     private EncryptionService encryptionService;
     private JWTService jwtService;
     private EmailService emailService;
+
     public UserService(LocalUserDAO localUserDAO, VerificationTokenDAO verificationTokenDAO, EncryptionService encryptionService, JWTService jwtService, EmailService emailService) {
         this.localUserDAO = localUserDAO;
         this.verificationTokenDAO = verificationTokenDAO;
@@ -37,8 +39,8 @@ public class UserService {
 
     public LocalUser registerUser(RegistrationBody registrationBody) throws UserAlreadyExistException, EmailFailureException {
 
-        if(localUserDAO.findByEmailIgnoreCase(registrationBody.getEmail()).isPresent()
-            || localUserDAO.findByUsernameIgnoreCase(registrationBody.getUsername()).isPresent()){
+        if (localUserDAO.findByEmailIgnoreCase(registrationBody.getEmail()).isPresent()
+                || localUserDAO.findByUsernameIgnoreCase(registrationBody.getUsername()).isPresent()) {
             throw new UserAlreadyExistException();
         }
         LocalUser user = new LocalUser();
@@ -53,7 +55,7 @@ public class UserService {
         return localUserDAO.save(user);
     }
 
-    private VerificationToken createVerificationToken(LocalUser user){
+    private VerificationToken createVerificationToken(LocalUser user) {
         VerificationToken verificationToken = new VerificationToken();
         verificationToken.setToken(jwtService.generateVerificationJWT(user));
         verificationToken.setCreatedTimestamp(new Timestamp(System.currentTimeMillis()));
@@ -64,17 +66,16 @@ public class UserService {
 
     public String loginUser(LoginBody loginBody) throws UserNotVerifiedException, EmailFailureException {
         Optional<LocalUser> opUser = localUserDAO.findByUsernameIgnoreCase(loginBody.getUsername());
-        if(opUser.isPresent()){
+        if (opUser.isPresent()) {
             LocalUser user = opUser.get();
-            if(encryptionService.verifyPassword(loginBody.getPassword(), user.getPassword())){
-                if(user.isEmailVerified()){
+            if (encryptionService.verifyPassword(loginBody.getPassword(), user.getPassword())) {
+                if (user.isEmailVerified()) {
                     return jwtService.generateJWT(user);
-                }
-                else{
+                } else {
                     List<VerificationToken> verificationTokens = user.getVerificationTokens();
                     boolean resend = verificationTokens.size() == 0
                             || verificationTokens.get(0).getCreatedTimestamp().before(new Timestamp(System.currentTimeMillis() - (60 * 60 * 1000)));
-                    if(resend){
+                    if (resend) {
                         VerificationToken verificationToken = createVerificationToken(user);
                         verificationTokenDAO.save(verificationToken);
                         emailService.sendVerificationEmail(verificationToken);
@@ -87,12 +88,12 @@ public class UserService {
     }
 
     @Transactional
-    public boolean verifyUser(String token){
+    public boolean verifyUser(String token) {
         Optional<VerificationToken> opToken = verificationTokenDAO.findByToken(token);
-        if(opToken.isPresent()){
+        if (opToken.isPresent()) {
             VerificationToken verificationToken = opToken.get();
             LocalUser user = verificationToken.getUser();
-            if(!user.isEmailVerified()){
+            if (!user.isEmailVerified()) {
                 user.setEmailVerified(true);
                 localUserDAO.save(user);
                 verificationTokenDAO.deleteByUser(user);
@@ -104,26 +105,32 @@ public class UserService {
 
     public void forgotPassword(String email) throws EmailNotFoundException, EmailFailureException {
         Optional<LocalUser> opUser = localUserDAO.findByEmailIgnoreCase(email);
-        if(opUser.isPresent()){
+        if (opUser.isPresent()) {
             LocalUser user = opUser.get();
             String token = jwtService.generatePasswordResetJWT(user);
             emailService.sendPasswordResetEmail(user, token);
-        }else{
+        } else {
             throw new EmailNotFoundException();
         }
     }
 
-    public void resetPassword(PasswordResetBody body){
+    public void resetPassword(PasswordResetBody body) {
         String email = jwtService.getResetPasswordEmail(body.getToken());
         Optional<LocalUser> opUser = localUserDAO.findByEmailIgnoreCase(email);
-        if(opUser.isPresent()){
+        if (opUser.isPresent()) {
             LocalUser user = opUser.get();
             user.setPassword(encryptionService.encryptPassword(body.getPassword()));
             localUserDAO.save(user);
         }
     }
 
-    public boolean userHasPermissionToUser(LocalUser user, Long id){
+    public boolean userHasPermissionToUser(LocalUser user, Long id) {
         return user.getId() == id;
+    }
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        String hashedPassword = passwordEncoder.encode("abc123");
+        System.out.println(hashedPassword);
     }
 }

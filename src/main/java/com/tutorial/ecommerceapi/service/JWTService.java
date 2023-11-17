@@ -6,9 +6,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tutorial.ecommerceapi.model.LocalUser;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JWTService {
@@ -30,13 +33,19 @@ public class JWTService {
     }
 
     public String generateJWT(LocalUser user){
+        // Get the authorities from the user
+        List<String> authorities = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
         return JWT.create().withClaim(USERNAME_KEY, user.getUsername())
+                .withClaim("roles", authorities)
                 .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * expiryInSeconds)))
                 .withIssuer(issuer)
                 .sign(algorithm);
     }
 
     public String generateVerificationJWT(LocalUser user){
+
         return JWT.create().withClaim(VERIFICATION_EMAIL_KEY, user.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * expiryInSeconds)))
                 .withIssuer(issuer)
