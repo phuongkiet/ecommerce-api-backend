@@ -13,19 +13,19 @@ DELETE FROM inventory;
 DELETE FROM product;
 DELETE FROM address;
 
-INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #1', 1,'Product one short description.', 'This is a very long description of product #1.', 5.50);
-INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #2', 1,'Product two short description.', 'This is a very long description of product #2.', 10.56);
-INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #3', 1,'Product three short description.', 'This is a very long description of product #3.', 2.74);
-INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #4', 1,'Product four short description.', 'This is a very long description of product #4.', 15.69);
-INSERT INTO product ([name], [is_enabled],short_description, long_description, price) VALUES ('Product #5', 1,'Product five short description.', 'This is a very long description of product #5.', 42.59);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price, [category]) VALUES ('Iphone 11', 1,'Iphone 11 128GB', 'Iphone 11 128GB 6GB RAM with camera 30MP', 499.99, 1);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price, [category]) VALUES ('Iphone 11 Pro', 1,'Iphone 11 Pro 128GB', 'Iphone 11 Pro 128GB 6GB RAM with camera 35MP', 599.99, 1);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price, [category]) VALUES ('Iphone 11 Pro Max', 1,'Iphone 11 Pro Max 128GB', 'Iphone 11 Pro Max 128GB 6GB RAM with camera 40MP', 699.99, 1);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price, [category]) VALUES ('Samsung Galaxy S20 FE', 1,'Samsung Galaxy S20 FE 256GB', 'Samsung Galaxy S20 FE 256GB 6GB RAM with camera zoom x30 and 100MP', 549.99, 2);
+INSERT INTO product ([name], [is_enabled],short_description, long_description, price, [category]) VALUES ('Oppo Reno 8', 1,'Oppo Reno 8 256GB', 'Oppo Reno 8 256GB 6GB RAM with camera 50MP', 449.99, 3);
 
 DECLARE @product1 INT, @product2 INT, @product3 INT, @product4 INT, @product5 AS INT;
 
-SELECT @product1 = id FROM product WHERE [name] = 'Product #1';
-SELECT @product2 = id FROM product WHERE [name] = 'Product #2';
-SELECT @product3 = id FROM product WHERE [name] = 'Product #3';
-SELECT @product4 = id FROM product WHERE [name] = 'Product #4';
-SELECT @product5 = id FROM product WHERE [name] = 'Product #5';
+SELECT @product1 = id FROM product WHERE [name] = 'Iphone 11';
+SELECT @product2 = id FROM product WHERE [name] = 'Iphone 11 Pro';
+SELECT @product3 = id FROM product WHERE [name] = 'Iphone 11 Pro Max';
+SELECT @product4 = id FROM product WHERE [name] = 'Samsung Galaxy S20 FE';
+SELECT @product5 = id FROM product WHERE [name] = 'Oppo Reno 8';
 
 INSERT INTO inventory (product_id, quantity) VALUES (@product1, 5);
 INSERT INTO inventory (product_id, quantity) VALUES (@product2, 8);
