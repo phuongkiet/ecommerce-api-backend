@@ -21,18 +21,31 @@ public class ProductController {
         this.productService = productService;
     }
 
+    //Get a list of product that is enabled
     @GetMapping
     public List<Product> getProducts(){
         return productService.getProducts();
     }
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/addProduct")
     public ResponseEntity<Product> addProduct(@Valid @RequestBody ProductInventoryBody body){
         Product savedProduct = productService.addProduct(body);
         return ResponseEntity.ok(savedProduct);
     }
 
-    //TODO: UPDATE PRODUCT
+    //Update product
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping("/updateProduct")
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody ProductInventoryBody body, @RequestParam Long productId){
+        Product updatedProduct = productService.updateProduct(productId, body);
+        return ResponseEntity.ok(updatedProduct);
+    }
 
-
+    //Delete Product by change the status of the Enabled
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping("/deleteProduct")
+    public ResponseEntity<Product> deleteProduct(@RequestParam Long productId){
+        Product deleteProduct = productService.deleteProduct(productId);
+        return ResponseEntity.ok(deleteProduct);
+    }
 }

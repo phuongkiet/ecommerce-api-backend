@@ -9,6 +9,7 @@ import com.tutorial.ecommerceapi.model.dao.InventoryDAO;
 import com.tutorial.ecommerceapi.model.dao.ProductDAO;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class ProductService {
     }
 
     public List<Product> getProducts(){
-        return productDAO.findAll();
+        return productDAO.findByIsEnabledTrue();
     }
 
     public Product addProduct(ProductInventoryBody body) {
@@ -59,6 +60,40 @@ public class ProductService {
         }
         
         return savedProduct;
+    }
+
+    public Product updateProduct(Long id, ProductInventoryBody body){
+        if(body == null){
+            throw new IllegalArgumentException("Request must not be null");
+        }
+        Product product = productDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        product.setName(body.getName());
+        product.setShortDescription(body.getShortDescription());
+        product.setLongDescription(body.getLongDescription());
+        product.setPrice(body.getPrice());
+        Category category = categoryDAO.findById(body.getCategoryId()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        product.setCategory(category);
+        Product updatedProduct = productDAO.save(product);
+        if(updatedProduct == null){
+            throw new RuntimeException("Failed to update product");
+        }
+        Inventory inventory = inventoryDAO.findByProduct(product).orElseThrow(() -> new IllegalArgumentException("Inventory not found"));
+        inventory.setQuantity(body.getQuantity());
+        Inventory updatedInventory = inventoryDAO.save(inventory);
+        if(updatedInventory == null){
+            throw new RuntimeException("Failed to update inventory");
+        }
+        return updatedProduct;
+    }
+
+    public Product deleteProduct(Long id){
+        Product product = productDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        product.setEnabled(false);
+        Product deletedProduct = productDAO.save(product);
+        if(deletedProduct == null){
+            throw new RuntimeException("Failed to delete product");
+        }
+        return deletedProduct;
     }
 
 
