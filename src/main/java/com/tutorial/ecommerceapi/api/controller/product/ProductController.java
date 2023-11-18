@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -21,10 +22,9 @@ public class ProductController {
         this.productService = productService;
     }
 
-    //Get a list of product that is enabled
     @GetMapping
-    public List<Product> getProducts(){
-        return productService.getProducts();
+    public List<Product> getAllProducts(){
+        return productService.getAllProduct();
     }
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/addProduct")

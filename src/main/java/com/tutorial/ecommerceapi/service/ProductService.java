@@ -24,8 +24,8 @@ public class ProductService {
         this.categoryDAO = categoryDAO;
     }
 
-    public List<Product> getProducts(){
-        return productDAO.findByIsEnabledTrue();
+    public List<Product> getAllProduct(){
+        return productDAO.findAll();
     }
 
     public Product addProduct(ProductInventoryBody body) {
