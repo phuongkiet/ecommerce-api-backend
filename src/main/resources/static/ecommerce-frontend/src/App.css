@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.footer {
+  bottom: 0;
+  display: flex;
+  background-color: black;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+
+
