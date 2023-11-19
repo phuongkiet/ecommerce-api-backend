@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
 import ProductService from "../services/ProductService";
 
 class ListProductComponent extends Component {
@@ -7,6 +8,12 @@ class ListProductComponent extends Component {
         this.state = {
             products: []
         }
+        this.addProduct = this.addProduct.bind(this);
+        this.updateProduct = this.updateProduct.bind(this);
+
+    }
+    updateProduct(id) {
+        this.props.history.push(`/product/update-product/${id}`);
     }
     componentDidMount() {
         ProductService.getProducts().then((res) => {
@@ -14,10 +21,17 @@ class ListProductComponent extends Component {
         });
     }
 
+    addProduct(){
+        this.props.history.push('/product/add-product');
+    }
+
     render() {
         return (
             <div>
                 <h2 className="text-center">Product List</h2>
+                <div className={"row"}>
+                    <button className={"btn btn-primary mb-3"} onClick={this.addProduct}> Add Product</button>
+                </div>
                 <div className="row">
                     <table className={"table table-striped table-bordered"}>
                         <thead>
@@ -46,6 +60,9 @@ class ListProductComponent extends Component {
                                         <td>{product.inventory.quantity}</td>
                                         <td>{product.category.categoryName}</td>
                                         <td>{product.enabled ? 'Available' : 'Not Available'}</td>
+                                        <td>
+                                            <button onClick={() => this.updateProduct(product.id)} className={"btn btn-info"}>Update</button>
+                                        </td>
                                     </tr>
                             )
                         }
@@ -57,4 +74,4 @@ class ListProductComponent extends Component {
     }
 }
 
-export default ListProductComponent;
+export default withRouter(ListProductComponent);

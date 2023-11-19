@@ -1,9 +1,11 @@
 import React from 'react';
 import "./App.css";
-import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ListProductComponent from "./components/ListProductComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
+import CreateProductComponent from "./components/CreateProductComponent";
+import UpdateProductComponent from "./components/UpdateProductComponent";
 
 function App() {
     return (
@@ -12,10 +14,12 @@ function App() {
                 <div className={"container"}>
                     <HeaderComponent/>
                     <div className={"container"}>
-                        <Routes>
-                            <Route path = "/" element = {<ListProductComponent />}></Route>
-                            <Route path = "/product/getAll" element = {<ListProductComponent />}></Route>
-                        </Routes>
+                        <Switch>
+                            <Route path = "/" exact component = {ListProductComponent}></Route>
+                            <Route path = "/product/getAll" component = {ListProductComponent}></Route>
+                            <Route path = "/product/add-product" component = {CreateProductComponent}></Route>
+                            <Route path = "/product/update-product/:id" component = {UpdateProductComponent} ></Route>
+                        </Switch>
                     </div>
                     <FooterComponent/>
                 </div>

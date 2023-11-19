@@ -13,7 +13,7 @@ class HeaderComponent extends Component {
             <div>
                 <header>
                     <nav className={"navbar navbar-expand-md navbar-dark bg-dark"}>
-                        <div style={{marginLeft: 10}}><a href={"#"} className={"navbar-brand"}>Phone Management</a></div>
+                        <div style={{marginLeft: "10px", fontSize: "25px"}}><span className={"text-white fw-bold"}>Phone Management</span></div>
                     </nav>
                 </header>
             </div>

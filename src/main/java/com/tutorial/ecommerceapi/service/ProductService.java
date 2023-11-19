@@ -28,6 +28,10 @@ public class ProductService {
         return productDAO.findAll();
     }
 
+    public Product getProductById(Long id){
+        return productDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+    }
+
     public Product addProduct(ProductInventoryBody body) {
         if(body == null){
             throw new IllegalArgumentException("Request must not be null");

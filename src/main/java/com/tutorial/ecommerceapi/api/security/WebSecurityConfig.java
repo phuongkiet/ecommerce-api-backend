@@ -22,7 +22,7 @@ public class WebSecurityConfig {
         http.csrf().disable().cors().disable();
         http.addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http.authorizeHttpRequests()
-                .requestMatchers("/product","/category", "/auth/register", "/auth/login", "/auth/verify", "/auth/forgot", "/auth/reset",
+                .requestMatchers("/product/**","/category", "/auth/register", "/auth/login", "/auth/verify", "/auth/forgot", "/auth/reset",
                         "/websocket", "/websocket/**").permitAll()
                 .anyRequest().authenticated();
         return http.build();

@@ -5,6 +5,17 @@ class ProductService {
     getProducts(){
         return axios.get(PRODUCT_API_BASE_URL);
     }
+
+    createProduct(product){
+        return axios.post(PRODUCT_API_BASE_URL + "/addProduct", product);
+    }
+
+    getProductById(productId){
+        return axios.get(PRODUCT_API_BASE_URL + '/' + productId);
+    }
+
 }
 
-export default new ProductService()
+const productService = new ProductService();
+
+export default productService;

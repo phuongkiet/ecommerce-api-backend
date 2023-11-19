@@ -26,21 +26,29 @@ public class ProductController {
     public List<Product> getAllProducts(){
         return productService.getAllProduct();
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id){
+        return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    //TODO: Add authorization into REACT
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/addProduct")
     public ResponseEntity<Product> addProduct(@Valid @RequestBody ProductInventoryBody body){
         Product savedProduct = productService.addProduct(body);
         return ResponseEntity.ok(savedProduct);
     }
 
+    //TODO: Add authorization into REACT
     //Update product
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping("/updateProduct")
-    public ResponseEntity<Product> updateProduct(@Valid @RequestBody ProductInventoryBody body, @RequestParam Long productId){
-        Product updatedProduct = productService.updateProduct(productId, body);
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping("/updateProduct/{id}")
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody ProductInventoryBody body, @PathVariable Long id){
+        Product updatedProduct = productService.updateProduct(id, body);
         return ResponseEntity.ok(updatedProduct);
     }
 
+    //TODO: Add authorization into REACT
     //Delete Product by change the status of the Enabled
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/deleteProduct")
