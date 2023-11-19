@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ProductService from "../services/ProductService";
+import CategoryService from "../services/CategoryService";
 
 class UpdateProductComponent extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class UpdateProductComponent extends Component {
             longDescription: '',
             price: '',
             quantity: '',
+            category: [],
             categoryId: ''
         }
 
@@ -22,11 +24,15 @@ class UpdateProductComponent extends Component {
         this.changeCategoryIdHandler = this.changeCategoryIdHandler.bind(this);
         this.updateProduct = this.updateProduct.bind(this);
     }
+
     componentDidMount() {
+        CategoryService.getCategory().then((res) => {
+            this.setState({category: res.data});
+        });
         ProductService.getProductById(this.state.id).then((res) => {
             let product = res.data;
             this.setState({name: product.name, shortDescription: product.shortDescription, longDescription: product.longDescription,
-                                price: product.price, quantity: product.inventory.quantity, categoryId: product.category.categoryName});
+                                price: product.price, quantity: product.inventory.quantity, categoryId: product.category.id});
         });
     }
 
@@ -94,10 +100,12 @@ class UpdateProductComponent extends Component {
                                     </div>
                                     <div className={"form-group mt-3 mb-3"}>
                                         <label>Category:</label>
-                                        <input className={"form-control"} placeholder={"Category"} name={"category"}
-                                               value={this.state.categoryId} onChange={this.changeCategoryIdHandler}/>
+                                        <select className={"form-control"} name={"category"} value={this.state.categoryId} onChange={this.changeCategoryIdHandler}>
+                                            {Array.isArray(this.state.category) && this.state.category.map(category => (
+                                                <option key={category.id} value={category.id}>{category.categoryName}</option>
+                                            ))}
+                                        </select>
                                     </div>
-
                                     <button className={"btn btn-success"} onClick={this.updateProduct}>Save</button>
                                     <button className={"btn btn-danger"} onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
                                 </form>
