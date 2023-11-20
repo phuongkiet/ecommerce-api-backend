@@ -42,7 +42,7 @@ public class ProductController {
     //TODO: Add authorization into REACT
     //Update product
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping("/updateProduct/{id}")
+    @PutMapping("/updateProduct/{id}")
     public ResponseEntity<Product> updateProduct(@Valid @RequestBody ProductInventoryBody body, @PathVariable Long id){
         Product updatedProduct = productService.updateProduct(id, body);
         return ResponseEntity.ok(updatedProduct);
