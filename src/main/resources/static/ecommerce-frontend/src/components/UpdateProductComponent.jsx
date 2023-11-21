@@ -41,6 +41,10 @@ class UpdateProductComponent extends Component {
         let product = {name: this.state.name, shortDescription: this.state.shortDescription, longDescription: this.state.longDescription,
             price: this.state.price, quantity: this.state.quantity, categoryId: this.state.categoryId}
         console.log('product => ' + JSON.stringify(product));
+
+        ProductService.updateProduct(product, this.state.id).then(res => {
+           this.props.history.push('/product/getAll');
+        });
     }
     changeNameHandler = (event) => {
         this.setState({name: event.target.value});

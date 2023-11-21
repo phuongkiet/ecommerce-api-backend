@@ -11,7 +11,7 @@ function App() {
     return (
         <div>
             <Router>
-                <div className={"container"}>
+                <div>
                     <HeaderComponent/>
                     <div className={"container"}>
                         <Switch>

@@ -14,6 +14,10 @@ class ProductService {
         return axios.get(PRODUCT_API_BASE_URL + '/' + productId);
     }
 
+    updateProduct(product, productId){
+        return axios.put(PRODUCT_API_BASE_URL + '/updateProduct/' + productId, product);
+    }
+
 }
 
 const productService = new ProductService();
