@@ -15,6 +15,9 @@ class ListProductComponent extends Component {
     updateProduct(id) {
         this.props.history.push(`/product/update-product/${id}`);
     }
+    viewProduct(id) {
+        this.props.history.push(`/product/${id}`);
+    }
     componentDidMount() {
         ProductService.getProducts().then((res) => {
             this.setState({products: res.data});
@@ -61,7 +64,9 @@ class ListProductComponent extends Component {
                                         <td>{product.category.categoryName}</td>
                                         <td>{product.enabled ? 'Available' : 'Not Available'}</td>
                                         <td>
-                                            <button onClick={() => this.updateProduct(product.id)} className={"btn btn-info"}>Update</button>
+                                            <div className={"d-flex"}>
+                                                <button onClick={() => this.viewProduct(product.id)} className={"btn btn-success"} >View</button>
+                                            </div>
                                         </td>
                                     </tr>
                             )

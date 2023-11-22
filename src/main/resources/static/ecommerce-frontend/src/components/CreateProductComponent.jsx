@@ -39,6 +39,7 @@ class CreateProductComponent extends Component {
         ProductService.createProduct(product).then(res => {
            this.props.history.push("/product/getAll");
         });
+        alert("Create successfully");
     }
     changeNameHandler = (event) => {
         this.setState({name: event.target.value});

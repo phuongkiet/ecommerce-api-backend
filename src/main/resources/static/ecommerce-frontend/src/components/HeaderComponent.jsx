@@ -11,8 +11,8 @@ class HeaderComponent extends Component {
     render() {
         return (
             <div>
-                <header>
-                    <nav className={"navbar navbar-expand-md navbar-dark bg-dark"}>
+                <header className={"App-header"}>
+                    <nav>
                         <div style={{marginLeft: "10px", fontSize: "25px"}}><span className={"text-white fw-bold"}>Phone Management</span></div>
                     </nav>
                 </header>
