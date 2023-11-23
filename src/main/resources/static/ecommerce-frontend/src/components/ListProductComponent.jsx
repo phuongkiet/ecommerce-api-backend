@@ -30,10 +30,10 @@ class ListProductComponent extends Component {
 
     render() {
         return (
-            <div>
+            <div className={"mt-3"}>
                 <h2 className="text-center">Product List</h2>
                 <div className={"row"}>
-                    <button className={"btn btn-primary mb-3"} onClick={this.addProduct}> Add Product</button>
+                    <button className={"btn btn-primary mt-2 mb-3"} onClick={this.addProduct}> Add Product</button>
                 </div>
                 <div className="row">
                     <table className={"table table-striped table-bordered"}>
