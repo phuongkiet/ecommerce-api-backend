@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
 import UserService from "../services/UserService"
+import {jwtDecode} from 'jwt-decode';
 
 class LoginComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoggedIn: false,
             jwt: '',
             active: "login",
             username: '',
             password: '',
-            onLogin: props.onLogin
+            onLogin: props.onLogin,
+            onLogout: props.onLogout
         }
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -26,7 +29,15 @@ class LoginComponent extends Component {
             // Check if the response has the expected structure
             if (res.data && res.data.jwt) {
                 localStorage.setItem("token", res.data.jwt);
-                this.props.history.push("/product/getAll");
+
+                let decoded = jwtDecode(res.data.jwt);
+                console.log('Decoded => ', decoded);
+                if (decoded.roles.includes('ROLE_ADMIN') || decoded.roles.includes('ROLE_MANAGER')) {
+                    this.props.history.push("/product/getAll");
+                } else if (decoded.roles.includes('ROLE_USER')) {
+                    this.props.history.push("/home");
+                }
+
             } else {
                 // Handle the case where the token is not present in the response
                 console.error("JWT token not found in the response");
@@ -45,31 +56,31 @@ class LoginComponent extends Component {
     render() {
         return (
             <div>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-4">
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-md-4">
                             <div className={"card mt-5 mb-5"}>
                                 <h3 className={"text-center mt-4"}>Login Page</h3>
-                                <div class="card-body">
+                                <div className="card-body">
                                     <form onSubmit={this.loginSubmit}>
-                                        <div class="mb-3">
-                                            <label for="username" class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username"
+                                        <div className="mb-3">
+                                            <label className="form-label">Username</label>
+                                            <input type="text" className="form-control" id="username"
                                                    value={this.state.username}
                                                    onChange={this.handleUsernameChange}/>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="password" class="form-control" id="password"
+                                        <div className="mb-3">
+                                            <label className="form-label">Password</label>
+                                            <input type="password" className="form-control" id="password"
                                                    value={this.state.password}
                                                    onChange={this.handlePasswordChange}/>
                                         </div>
-                                        <div class="mb-3">
+                                        <div className="mb-3">
                                             <a href="#">Forgot password?</a>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Login</button>
+                                        <button type="submit" className="btn btn-primary">Login</button>
                                     </form>
-                                    <div class="mt-3">
+                                    <div className="mt-3">
                                         Not yet a member? <a href="#">Sign up now</a>
                                     </div>
                                 </div>

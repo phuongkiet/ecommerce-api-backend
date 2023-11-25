@@ -29,7 +29,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.csrf().disable();
+        http.csrf().disable().cors().disable();
         http.addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http.authorizeHttpRequests()
                 .requestMatchers("/product/**","/category", "/auth/register", "/auth/login", "/auth/verify", "/auth/forgot", "/auth/reset",
