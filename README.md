@@ -1,4 +1,4 @@
-# Welcome to Phone Management Project
+# Welcome to Phone Management Project (PAUSING)
 
 ## Tech Stack
 * Springboot
